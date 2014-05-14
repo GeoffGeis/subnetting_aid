@@ -1,51 +1,48 @@
 require 'ipaddress'
 
-class TheSubNetter
-
-  def initialize(network_class, ip, subnets)
-    @network_class = network_class
-    @ip = ip
-    @subnets = subnets
+class Subnetter
+  def user_input
+    puts "What class network?"
+    @network_class = gets.chomp.to_s.downcase
+    puts "What is the ip?"
+    @ip = gets.chomp.to_s.downcase
+    puts "How many subnets?"
+    @subnets = gets.chomp.to_i
   end
 
-  def ip_class
+  def route
     if @network_class == "c"
-      IPAddress "#{@ip}/24"
+    @ip = IPAddress "#{@ip}/24"
     elsif @network_class == "b"
-      IPAddress "#{@ip}/16"
-    elsif @network_class == "a"
-      IPAddress "#{@ip}/8"
-    else
-      "Error!"
+    @ip = IPAddress "#{@ip}/16"
+    else @network_class == "a"
+    @ip = IPAddress "#{@ip}/8"
     end
   end
 
-  def subnet(ip)
-    subnets = ip.split(@subnets)
+  def output_routes
+    address = route
+    @output_routes = address.split(@subnets)
   end
 
-  def ranges(subnets)
-    bcast = subnets.map do |i|
+  def ranges
+    bcast = @output_routes.map do |i|
       i.broadcast
     end
-    bcast.map do |i|
+    @values = bcast.map do |i|
       [i.first.to_string, i.last.to_string]  
     end
   end
 
+  def print_values
+    @values.each do |i|
+      puts i[0] + "  =>  " + i[1]
+    end
+  end
 end
 
-puts "What class network?"
-network_class = gets.chomp.to_s.downcase
-puts "What is the ip?"
-ip = gets.chomp.to_s.downcase
-puts "How many subnets?"
-subnets = gets.chomp.to_i
-
-get_subd = TheSubNetter.new(network_class, ip, subnets)
-address = get_subd.ip_class
-subnets = get_subd.subnet(address)
-ranges = get_subd.ranges(subnets)
-ranges.each do |i|
-  puts i[0] + "  =>  " + i[1]
-end
+s = Subnetter.new 
+s.user_input
+s.output_routes
+s.ranges
+s.print_values
