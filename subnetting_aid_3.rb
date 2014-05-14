@@ -34,9 +34,7 @@ class Subnetter
 
   def print_values
     user_input; output_routes; ranges
-    @values.each do |i|
-      puts i[0] + "  =>  " + i[1]
-    end
+    @values.each { |i| puts i[0] + "  =>  " + i[1] }
   end
 end
 
