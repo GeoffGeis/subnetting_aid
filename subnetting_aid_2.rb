@@ -26,9 +26,7 @@ class Subnetter
   end
 
   def ranges
-    bcast = @output_routes.map do |i|
-      i.broadcast
-    end
+    bcast = @output_routes.map { |i| i.broadcast }
     @values = bcast.map do |i|
       [i.first.to_string, i.last.to_string]  
     end
