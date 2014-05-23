@@ -2,7 +2,8 @@ require 'ipaddress'
 
 class Subnetter
   def initialize
-    user_input; route; subnet
+    @network_class, @ip, @subnets = "", "", 0
+    user_input; convert_network_class; subnet
   end
 
   def user_input
@@ -14,7 +15,7 @@ class Subnetter
     @subnets = gets.chomp.to_i
   end
 
-  def route
+  def convert_network_class
     if @network_class == "c"
       @ip = IPAddress "#{@ip}/24"
     elsif @network_class == "b"
@@ -27,9 +28,7 @@ class Subnetter
   def subnet
     output_routes = @ip.split(@subnets)
     bcast = output_routes.map { |i| i.broadcast }
-    values = bcast.map do |i|
-      [i.first.to_string, i.last.to_string]
-    end 
+    values = bcast.map { |i| [i.first.to_string, i.last.to_string] }
     values.each { |i| puts i[0] + "  =>  " + i[1] }
   end
 end
