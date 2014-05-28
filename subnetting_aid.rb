@@ -2,8 +2,7 @@ require 'ipaddress'
 
 class Subnetter
   def initialize
-    @network_class, @ip, @subnets = "", "", 0
-    user_input; convert_network_class; subnet
+    @network_class, @ip, @subnets = user_input, convert_network_class, subnet
   end
 
   def user_input
